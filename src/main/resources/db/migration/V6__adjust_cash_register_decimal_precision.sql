@@ -1,0 +1,6 @@
+ALTER TABLE cash_register_closing
+ALTER COLUMN total_pix TYPE DECIMAL(19, 2),
+ALTER COLUMN total_cash TYPE DECIMAL(19, 2),
+ALTER COLUMN total_debit TYPE DECIMAL(19, 2),
+ALTER COLUMN total_credit TYPE DECIMAL(19, 2),
+ALTER COLUMN total_amount TYPE DECIMAL(19, 2);

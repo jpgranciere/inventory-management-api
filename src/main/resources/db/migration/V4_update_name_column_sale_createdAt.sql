@@ -1,0 +1,1 @@
+ALTER TABLE sale RENAME COLUMN create_at TO created_at;
