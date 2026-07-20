@@ -52,8 +52,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(buildErrorResponse(HttpStatus.BAD_REQUEST, ex, httpServletRequest));
     }
 
-    @ExceptionHandler(SalesNotFoundForReferenceDateException.class)
-    public ResponseEntity<ErrorResponse> handlerSalesNotFoundForReferenceDateException(SalesNotFoundForReferenceDateException ex, HttpServletRequest httpServletRequest){
+    @ExceptionHandler(SalesNotFound.class)
+    public ResponseEntity<ErrorResponse> handlerSalesNotFoundForReferenceDateException(SalesNotFound ex, HttpServletRequest httpServletRequest){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(buildErrorResponse(HttpStatus.NOT_FOUND, ex, httpServletRequest));
     }
 

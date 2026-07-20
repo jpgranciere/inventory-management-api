@@ -48,6 +48,13 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
+    @GetMapping("/consult")
+    public ResponseEntity<ProductResponse> getProductBySkuOrGtin(@RequestParam(required = false) String sku,@RequestParam(required = false) String gtin){
+        var product = productService.getProductBySkuOrGtin(sku, gtin);
+
+        return ResponseEntity.ok(product);
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<ProductResponse> patchProductById(@Valid @RequestBody ProductUpdateRequest request, @PathVariable Long id){
         var productUpdate = productService.updateProduct(request, id);

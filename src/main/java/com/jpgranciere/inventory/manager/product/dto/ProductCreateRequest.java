@@ -20,6 +20,9 @@ public record ProductCreateRequest(
         @Min(10)
         int minStockQuantity,
         @NotNull
-        BigDecimal price
+        BigDecimal price,
+        @NotBlank
+        @Min(8)
+        String gtin
 ) {
 }

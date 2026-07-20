@@ -18,7 +18,9 @@ public record ProductUpdateRequest(
         @Min(10)
         Integer minStockQuantity,
 
-        BigDecimal price
+        BigDecimal price,
+
+        String gtin
 
 
     ) {

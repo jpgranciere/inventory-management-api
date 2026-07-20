@@ -2,6 +2,7 @@ package com.jpgranciere.inventory.manager.sale.service;
 
 import com.jpgranciere.inventory.manager.exception.InsufficientStockException;
 import com.jpgranciere.inventory.manager.exception.ProductNotFoundException;
+import com.jpgranciere.inventory.manager.exception.SalesNotFound;
 import com.jpgranciere.inventory.manager.product.entity.Product;
 import com.jpgranciere.inventory.manager.product.repository.ProductRepository;
 import com.jpgranciere.inventory.manager.sale.dto.*;
@@ -9,6 +10,8 @@ import com.jpgranciere.inventory.manager.sale.entity.Sale;
 import com.jpgranciere.inventory.manager.sale.entity.SaleItem;
 import com.jpgranciere.inventory.manager.sale.repository.SaleRepository;
 import com.jpgranciere.inventory.manager.stockmovement.service.StockMovementService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +58,18 @@ public class SaleService {
         saleRepository.save(sale);
 
         return new SaleResponse(sale);
+    }
+
+    public Page<SaleResponse> getSales(Pageable pageable){
+        return saleRepository.findAll(pageable)
+                .map(SaleResponse::new);
+    }
+
+    public SaleResponse getSaleById(Long id){
+        return saleRepository.findById(id)
+                .map(SaleResponse::new)
+                .orElseThrow(()-> new SalesNotFound());
+
     }
 
     //methods

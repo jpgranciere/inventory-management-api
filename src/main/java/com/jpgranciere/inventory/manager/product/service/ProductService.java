@@ -63,6 +63,17 @@ public class ProductService {
 
         return new ProductResponse(repository.save(product));
     }
+
+    public ProductResponse getProductBySkuOrGtin(String sku, String gtin){
+        if(sku == null && gtin == null){
+            throw new ProductNotFoundException();
+        }
+
+        Product product = repository.findBySkuOrGtin(sku, gtin).
+                orElseThrow(ProductNotFoundException::new);
+
+        return new ProductResponse(product);
+    }
     
     //methods
     private Product searchProduct(Long id){
@@ -85,5 +96,4 @@ public class ProductService {
             }
         }
     }
-
 }

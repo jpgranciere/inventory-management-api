@@ -37,6 +37,7 @@ public class Product {
     private ProductStatus status;
 
     private BigDecimal price;
+    private String gtin;
 
     public Product(ProductCreateRequest request) {
         this.name = request.name();
@@ -47,6 +48,7 @@ public class Product {
         this.minStockQuantity = request.minStockQuantity();
         this.status = ProductStatus.ACTIVE;
         this.price = request.price();
+        this.gtin = request.gtin();
     }
 
     public void updateProduct(ProductUpdateRequest request){
@@ -67,6 +69,9 @@ public class Product {
         }
         if(request.price() != null){
             setPrice(request.price());
+        }
+        if(request.gtin() != null){
+            setGtin(request.gtin());
         }
     }
 

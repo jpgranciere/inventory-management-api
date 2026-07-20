@@ -7,9 +7,8 @@ import com.jpgranciere.inventory.manager.cashier.entity.CashRegisterClosing;
 import com.jpgranciere.inventory.manager.cashier.enums.ClosingStatus;
 import com.jpgranciere.inventory.manager.cashier.repository.CashRegisterClosingRepository;
 import com.jpgranciere.inventory.manager.exception.DateFutureExeception;
-import com.jpgranciere.inventory.manager.exception.InsufficientStockException;
 import com.jpgranciere.inventory.manager.exception.ReferenceDateExistisException;
-import com.jpgranciere.inventory.manager.exception.SalesNotFoundForReferenceDateException;
+import com.jpgranciere.inventory.manager.exception.SalesNotFound;
 import com.jpgranciere.inventory.manager.sale.entity.Sale;
 import com.jpgranciere.inventory.manager.sale.repository.SaleRepository;
 import org.springframework.data.domain.Page;
@@ -44,7 +43,7 @@ public class CashRegisterClosingService {
         List<Sale> sales = saleRepository.findByCreatedAtGreaterThanEqualAndCreatedAtLessThan(start,end);
 
         if(sales.isEmpty()){
-            throw new SalesNotFoundForReferenceDateException();
+            throw new SalesNotFound();
         }
 
         TotalSummary totals = calculateClosingResponse(sales);
@@ -68,7 +67,7 @@ public class CashRegisterClosingService {
 
     public CashRegisterClosingResponse getClosingByDate(LocalDate date){
         CashRegisterClosing closing = cashRegisterClosingRepository.findByReferenceDate(date)
-                .orElseThrow(SalesNotFoundForReferenceDateException::new);
+                .orElseThrow(SalesNotFound::new);
 
         return new CashRegisterClosingResponse(closing);
     }

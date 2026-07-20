@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsBySku(String sku);
@@ -13,4 +15,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByStatus(ProductStatus status, Pageable pageable);
 
     boolean existsBySkuAndIdNot(String sku, Long id);
+
+    Optional <Product> findBySkuOrGtin(String sku, String gtin);
 }
