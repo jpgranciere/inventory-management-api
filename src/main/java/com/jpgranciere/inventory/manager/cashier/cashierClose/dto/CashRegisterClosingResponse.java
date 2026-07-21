@@ -1,7 +1,7 @@
-package com.jpgranciere.inventory.manager.cashier.dto;
+package com.jpgranciere.inventory.manager.cashier.cashierClose.dto;
 
-import com.jpgranciere.inventory.manager.cashier.entity.CashRegisterClosing;
-import com.jpgranciere.inventory.manager.cashier.enums.ClosingStatus;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.entity.CashRegisterClosing;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.enums.ClosingStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

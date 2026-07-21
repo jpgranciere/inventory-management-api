@@ -1,4 +1,4 @@
-package com.jpgranciere.inventory.manager.cashier.dto;
+package com.jpgranciere.inventory.manager.cashier.cashierClose.dto;
 
 import java.math.BigDecimal;
 

@@ -1,7 +1,7 @@
-package com.jpgranciere.inventory.manager.cashier.repository;
+package com.jpgranciere.inventory.manager.cashier.cashierClose.repository;
 
-import com.jpgranciere.inventory.manager.cashier.entity.CashRegisterClosing;
-import com.jpgranciere.inventory.manager.cashier.enums.ClosingStatus;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.entity.CashRegisterClosing;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.enums.ClosingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 import java.util.Optional;

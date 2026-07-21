@@ -1,11 +1,11 @@
-package com.jpgranciere.inventory.manager.cashier.service;
+package com.jpgranciere.inventory.manager.cashier.cashierClose.service;
 
-import com.jpgranciere.inventory.manager.cashier.dto.CashRegisterClosingCreateRequest;
-import com.jpgranciere.inventory.manager.cashier.dto.CashRegisterClosingResponse;
-import com.jpgranciere.inventory.manager.cashier.dto.TotalSummary;
-import com.jpgranciere.inventory.manager.cashier.entity.CashRegisterClosing;
-import com.jpgranciere.inventory.manager.cashier.enums.ClosingStatus;
-import com.jpgranciere.inventory.manager.cashier.repository.CashRegisterClosingRepository;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.dto.CashRegisterClosingCreateRequest;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.dto.CashRegisterClosingResponse;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.dto.TotalSummary;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.entity.CashRegisterClosing;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.enums.ClosingStatus;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.repository.CashRegisterClosingRepository;
 import com.jpgranciere.inventory.manager.exception.DateFutureExeception;
 import com.jpgranciere.inventory.manager.exception.ReferenceDateExistisException;
 import com.jpgranciere.inventory.manager.exception.SalesNotFound;

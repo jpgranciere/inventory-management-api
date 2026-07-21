@@ -1,8 +1,8 @@
-package com.jpgranciere.inventory.manager.cashier.controller;
+package com.jpgranciere.inventory.manager.cashier.cashierClose.controller;
 
-import com.jpgranciere.inventory.manager.cashier.dto.CashRegisterClosingCreateRequest;
-import com.jpgranciere.inventory.manager.cashier.dto.CashRegisterClosingResponse;
-import com.jpgranciere.inventory.manager.cashier.service.CashRegisterClosingService;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.dto.CashRegisterClosingCreateRequest;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.dto.CashRegisterClosingResponse;
+import com.jpgranciere.inventory.manager.cashier.cashierClose.service.CashRegisterClosingService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

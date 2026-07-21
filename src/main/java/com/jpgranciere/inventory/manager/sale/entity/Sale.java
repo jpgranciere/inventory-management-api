@@ -1,5 +1,6 @@
 package com.jpgranciere.inventory.manager.sale.entity;
 
+import com.jpgranciere.inventory.manager.cashier.cashierOpen.entity.CashRegister;
 import com.jpgranciere.inventory.manager.exception.InsufficientPaymentException;
 import com.jpgranciere.inventory.manager.exception.InvalidPaymentException;
 import com.jpgranciere.inventory.manager.exception.PaymentMethodRequiredException;
@@ -25,7 +26,6 @@ public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private LocalDateTime createdAt = LocalDateTime.now();
     private BigDecimal total;
 
@@ -35,9 +35,12 @@ public class Sale {
 
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
-
     private BigDecimal amountPaid;
     private BigDecimal changeAmount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cash_register_id", nullable = false)
+    private CashRegister cashRegister;
 
     public void addSaleItem(SaleItem saleItem) {
         saleItem.setSale(this);

@@ -77,6 +77,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(buildErrorResponse(HttpStatus.NOT_FOUND, ex, httpServletRequest));
     }
 
+    @ExceptionHandler(CashRegisterAlreadyClosedException.class)
+    public ResponseEntity<ErrorResponse> handlerCashRegisterAlreadyClosedException(CashRegisterAlreadyClosedException ex, HttpServletRequest httpServletRequest){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(buildErrorResponse(HttpStatus.CONFLICT, ex, httpServletRequest));
+    }
+
     private ErrorResponse buildErrorResponse(HttpStatus status, Exception ex, HttpServletRequest request){
         return new ErrorResponse(LocalDateTime.now(), status.value(), status.getReasonPhrase(), ex.getMessage(), request.getRequestURI());
     }
