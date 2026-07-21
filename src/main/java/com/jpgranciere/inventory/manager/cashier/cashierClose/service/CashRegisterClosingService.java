@@ -1,46 +1,38 @@
 package com.jpgranciere.inventory.manager.cashier.cashierClose.service;
 
-import com.jpgranciere.inventory.manager.cashier.cashierClose.dto.CashRegisterClosingCreateRequest;
 import com.jpgranciere.inventory.manager.cashier.cashierClose.dto.CashRegisterClosingResponse;
 import com.jpgranciere.inventory.manager.cashier.cashierClose.dto.TotalSummary;
 import com.jpgranciere.inventory.manager.cashier.cashierClose.entity.CashRegisterClosing;
-import com.jpgranciere.inventory.manager.cashier.cashierClose.enums.ClosingStatus;
 import com.jpgranciere.inventory.manager.cashier.cashierClose.repository.CashRegisterClosingRepository;
-import com.jpgranciere.inventory.manager.exception.DateFutureExeception;
-import com.jpgranciere.inventory.manager.exception.ReferenceDateExistisException;
-import com.jpgranciere.inventory.manager.exception.SalesNotFound;
+import com.jpgranciere.inventory.manager.cashier.cashierOpen.entity.CashRegister;
+import com.jpgranciere.inventory.manager.cashier.cashierOpen.enums.CashRegisterStatus;
+import com.jpgranciere.inventory.manager.cashier.cashierOpen.repository.CashRegisterRepository;
+import com.jpgranciere.inventory.manager.exception.*;
 import com.jpgranciere.inventory.manager.sale.entity.Sale;
 import com.jpgranciere.inventory.manager.sale.repository.SaleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
 @Service
+@RequiredArgsConstructor
 public class CashRegisterClosingService {
     private final CashRegisterClosingRepository cashRegisterClosingRepository;
     private final SaleRepository saleRepository;
-
-    public CashRegisterClosingService(CashRegisterClosingRepository cashRegisterClosingRepository, SaleRepository saleRepository) {
-        this.cashRegisterClosingRepository = cashRegisterClosingRepository;
-        this.saleRepository = saleRepository;
-    }
+    private final CashRegisterRepository cashRegisterRepository;
 
     @Transactional
-    public CashRegisterClosingResponse registerCashClosing(CashRegisterClosingCreateRequest request){
-        verifyFutureDate(request.referenceDate());
+    public CashRegisterClosingResponse registerCashClosing(Long id){
+        CashRegister cashRegister = cashRegisterRepository.findByCashRegisterStatus(CashRegisterStatus.OPEN)
+                .orElseThrow(CashRegisterNotOpenException::new);
 
-        existsByDateAndStatus(request.referenceDate());
-
-        LocalDateTime start = request.referenceDate().atStartOfDay();
-        LocalDateTime end =  request.referenceDate().plusDays(1).atStartOfDay();
-
-        List<Sale> sales = saleRepository.findByCreatedAtGreaterThanEqualAndCreatedAtLessThan(start,end);
+        List<Sale> sales = saleRepository.findByCashRegisterId(cashRegister.getId());
 
         if(sales.isEmpty()){
             throw new SalesNotFound();
@@ -49,15 +41,20 @@ public class CashRegisterClosingService {
         TotalSummary totals = calculateClosingResponse(sales);
 
         CashRegisterClosing cashRegisterClosing = new CashRegisterClosing(
-                request.referenceDate(),
+                cashRegister.getOpenedAt().toLocalDate(),
                 totals.totalSales(),
                 totals.totalPix(),
                 totals.totalDebit(),
                 totals.totalCredit(),
                 totals.totalCash(),
-                sales.size());
+                sales.size(),
+                cashRegister);
 
-        return new CashRegisterClosingResponse(cashRegisterClosingRepository.save(cashRegisterClosing));
+        cashRegister.close();
+
+        CashRegisterClosing savedClosing = cashRegisterClosingRepository.save(cashRegisterClosing);
+
+        return new CashRegisterClosingResponse(savedClosing);
     }
 
     public Page<CashRegisterClosingResponse> listClosedRegisters(Pageable pageable){
@@ -73,19 +70,6 @@ public class CashRegisterClosingService {
     }
 
     //methods
-    private void verifyFutureDate(LocalDate date){
-        LocalDate today = LocalDate.now();
-
-        if(date.isAfter(today)){
-            throw new DateFutureExeception();
-        }
-    }
-
-    private void existsByDateAndStatus(LocalDate date){
-        if(cashRegisterClosingRepository.existsByReferenceDateAndClosingStatus(date, ClosingStatus.CLOSED)){
-            throw new ReferenceDateExistisException();
-        }
-    }
 
     private TotalSummary calculateClosingResponse(List<Sale> sales){
         BigDecimal totalPix = BigDecimal.ZERO;
@@ -104,8 +88,7 @@ public class CashRegisterClosingService {
 
         BigDecimal totalSales = totalPix.add(totalDebit).add(totalCredit).add(totalCash);
 
-        return new TotalSummary(totalSales, totalPix, totalDebit, totalCredit, totalCredit);
+        return new TotalSummary(totalSales, totalPix, totalDebit, totalCredit, totalCash);
     }
-
 
 }

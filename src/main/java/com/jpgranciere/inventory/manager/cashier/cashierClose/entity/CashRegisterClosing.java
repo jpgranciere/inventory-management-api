@@ -1,9 +1,7 @@
 package com.jpgranciere.inventory.manager.cashier.cashierClose.entity;
 
-import com.jpgranciere.inventory.manager.cashier.cashierClose.enums.ClosingStatus;
 import com.jpgranciere.inventory.manager.cashier.cashierOpen.entity.CashRegister;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
 
 

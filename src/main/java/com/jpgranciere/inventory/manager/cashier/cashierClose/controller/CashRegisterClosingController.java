@@ -1,9 +1,11 @@
 package com.jpgranciere.inventory.manager.cashier.cashierClose.controller;
 
-import com.jpgranciere.inventory.manager.cashier.cashierClose.dto.CashRegisterClosingCreateRequest;
 import com.jpgranciere.inventory.manager.cashier.cashierClose.dto.CashRegisterClosingResponse;
 import com.jpgranciere.inventory.manager.cashier.cashierClose.service.CashRegisterClosingService;
+import com.jpgranciere.inventory.manager.cashier.cashierOpen.entity.CashRegister;
+import com.jpgranciere.inventory.manager.cashier.cashierOpen.repository.CashRegisterRepository;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -11,24 +13,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/close")
+@RequestMapping("/cash-registers")
+@RequiredArgsConstructor
 public class CashRegisterClosingController {
-    private CashRegisterClosingService cashRegisterClosingService;
+    private final CashRegisterClosingService cashRegisterClosingService;
 
-    public CashRegisterClosingController(CashRegisterClosingService cashRegisterClosingService) {
-        this.cashRegisterClosingService = cashRegisterClosingService;
-    }
+    @PostMapping("/{id}/close")
+    public ResponseEntity<CashRegisterClosingResponse> close(@PathVariable Long id, UriComponentsBuilder uriBuilder){
+        CashRegisterClosingResponse response = cashRegisterClosingService.registerCashClosing(id);
 
-    @PostMapping
-    public ResponseEntity<CashRegisterClosingResponse> closeCashier(@Valid @RequestBody CashRegisterClosingCreateRequest request, UriComponentsBuilder uriBuilder){
-        var close = cashRegisterClosingService.registerCashClosing(request);
+        URI uri = uriBuilder.path("/cash/registers/closings/{closingId}").buildAndExpand(response.id()).toUri();
 
-        var uri = uriBuilder.path("/close/{id}").buildAndExpand(close.id()).toUri();
-
-        return ResponseEntity.created(uri).body(close);
+        return ResponseEntity.created(uri).body(response);
     }
 
     @GetMapping

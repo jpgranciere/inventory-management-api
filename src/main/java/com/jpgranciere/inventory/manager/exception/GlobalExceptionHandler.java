@@ -82,6 +82,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(buildErrorResponse(HttpStatus.CONFLICT, ex, httpServletRequest));
     }
 
+    @ExceptionHandler(CashRegisterNotOpenException.class)
+    public ResponseEntity<ErrorResponse> handlerCashRegisterNotOpenException(CashRegisterNotOpenException ex, HttpServletRequest httpServletRequest){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(buildErrorResponse(HttpStatus.NOT_FOUND, ex, httpServletRequest));
+    }
+
     private ErrorResponse buildErrorResponse(HttpStatus status, Exception ex, HttpServletRequest request){
         return new ErrorResponse(LocalDateTime.now(), status.value(), status.getReasonPhrase(), ex.getMessage(), request.getRequestURI());
     }
