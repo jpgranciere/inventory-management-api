@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface CashRegisterRepository extends JpaRepository<CashRegister, Long> {
     Optional <CashRegister> findByCashRegisterStatus(CashRegisterStatus cashRegisterStatus);
+
+    boolean existsByCashRegisterStatus(CashRegisterStatus cashRegisterStatus);
 }

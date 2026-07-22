@@ -11,6 +11,7 @@ import com.jpgranciere.inventory.manager.stockmovement.dto.StockMovementResponse
 import com.jpgranciere.inventory.manager.stockmovement.entity.StockMovement;
 import com.jpgranciere.inventory.manager.stockmovement.enums.MovementType;
 import com.jpgranciere.inventory.manager.stockmovement.repository.StockMovementRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,15 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
+@RequiredArgsConstructor
 public class StockMovementService {
 
     private final ProductRepository productRepository;
     private final StockMovementRepository stockMovementRepository;
-
-    public StockMovementService(ProductRepository productRepository, StockMovementRepository stockMovementRepository){
-        this.productRepository = productRepository;
-        this.stockMovementRepository = stockMovementRepository;
-    }
 
     @Transactional
     public StockMovementResponse registerMovement(StockMovementCreateRequest stockMovementCreateRequest){

@@ -4,6 +4,7 @@ import com.jpgranciere.inventory.manager.stockmovement.dto.StockMovementCreateRe
 import com.jpgranciere.inventory.manager.stockmovement.dto.StockMovementResponse;
 import com.jpgranciere.inventory.manager.stockmovement.service.StockMovementService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -13,13 +14,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/stock-movements")
+@RequiredArgsConstructor
 public class StockProductController {
 
     private final StockMovementService stockMovementService;
 
-    public StockProductController(StockMovementService stockMovementService) {
-        this.stockMovementService = stockMovementService;
-    }
 
     @PostMapping
     public ResponseEntity<StockMovementResponse> registerMovement(@Valid @RequestBody StockMovementCreateRequest request, UriComponentsBuilder uriBuilder){

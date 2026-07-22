@@ -1,6 +1,6 @@
 CREATE TABLE sale (
     id BIGSERIAL PRIMARY KEY,
-    create_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     total NUMERIC(19, 2) NOT NULL
 );
 

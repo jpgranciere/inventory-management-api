@@ -103,4 +103,8 @@ public class Sale {
         }
     }
 
+    public void attachToCashRegister(CashRegister cashRegister){
+        this.setCashRegister(cashRegister);
+    }
+
 }

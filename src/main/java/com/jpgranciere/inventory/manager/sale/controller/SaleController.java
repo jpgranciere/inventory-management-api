@@ -4,6 +4,7 @@ import com.jpgranciere.inventory.manager.sale.dto.SaleCreateRequest;
 import com.jpgranciere.inventory.manager.sale.dto.SaleResponse;
 import com.jpgranciere.inventory.manager.sale.service.SaleService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -13,13 +14,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/sales")
+@RequiredArgsConstructor
 public class SaleController {
 
     private final SaleService saleService;
-
-    public SaleController(SaleService saleService) {
-        this.saleService = saleService;
-    }
 
     @PostMapping
     public ResponseEntity<SaleResponse> registerSale(@Valid @RequestBody SaleCreateRequest request, UriComponentsBuilder uriComponentsBuilder){

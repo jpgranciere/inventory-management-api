@@ -6,6 +6,7 @@ import com.jpgranciere.inventory.manager.product.dto.ProductStatusUpdateRequest;
 import com.jpgranciere.inventory.manager.product.dto.ProductUpdateRequest;
 import com.jpgranciere.inventory.manager.product.service.ProductService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,13 +17,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/products")
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
-
-    public ProductController(ProductService productService){
-        this.productService = productService;
-    }
 
     @PostMapping
     @Transactional

@@ -17,7 +17,7 @@ import java.net.URI;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/cash-registers")
+@RequestMapping("/cash-close")
 @RequiredArgsConstructor
 public class CashRegisterClosingController {
     private final CashRegisterClosingService cashRegisterClosingService;
