@@ -8,9 +8,6 @@ import java.util.Optional;
 
 public interface CashRegisterClosingRepository extends JpaRepository<CashRegisterClosing, Long> {
 
-//    boolean existsByReferenceDateAndClosingStatus(LocalDate data, ClosingStatus closingStatus);
     boolean existsByReferenceDate(LocalDate referenceDate);
-
-//    CashRegisterClosing getByReferenceDate(LocalDate request);
     Optional<CashRegisterClosing> findByReferenceDate(LocalDate referenceDate);
 }

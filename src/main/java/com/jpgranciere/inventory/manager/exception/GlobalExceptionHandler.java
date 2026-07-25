@@ -141,6 +141,14 @@ public class GlobalExceptionHandler {
         return handleBusinessException(ex, request, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(UserAlreadyRegistrationException.class)
+    public ResponseEntity<ErrorResponse> handlerUserAlreadyRegistrationException(
+            UserAlreadyRegistrationException ex,
+            HttpServletRequest request
+    ){
+        return handleBusinessException(ex,request, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleUnexpectedException(
             Exception ex,
