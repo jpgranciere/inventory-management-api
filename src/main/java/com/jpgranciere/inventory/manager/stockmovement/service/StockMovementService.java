@@ -12,6 +12,7 @@ import com.jpgranciere.inventory.manager.stockmovement.entity.StockMovement;
 import com.jpgranciere.inventory.manager.stockmovement.enums.MovementType;
 import com.jpgranciere.inventory.manager.stockmovement.repository.StockMovementRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StockMovementService {
 
     private final ProductRepository productRepository;
@@ -37,6 +39,8 @@ public class StockMovementService {
 
         var stockMovement = createStockMovement(stockMovementCreateRequest, product);
         stockMovementRepository.save(stockMovement);
+        log.info("Movimentação de estoque: id={}, productId={}, tipo={}, quantidade={}",
+                stockMovement.getId(), product.getId(), stockMovementCreateRequest.movementType(), stockMovementCreateRequest.quantity());
 
         return new StockMovementResponse(stockMovement);
     }
@@ -61,7 +65,9 @@ public class StockMovementService {
     //methods
     public StockMovement registerExitMovement(Product product, int quantity){
         StockMovement stockMovement = new StockMovement(product, quantity);
-        return stockMovementRepository.save(stockMovement);
+        StockMovement saved = stockMovementRepository.save(stockMovement);
+        log.info("Movimentação de saída (venda): productId={}, quantidade={}", product.getId(), quantity);
+        return saved;
     }
 
     private Product searchProduct(Long id){

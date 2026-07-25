@@ -10,6 +10,7 @@ import com.jpgranciere.inventory.manager.product.entity.Product;
 import com.jpgranciere.inventory.manager.product.enums.ProductStatus;
 import com.jpgranciere.inventory.manager.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductService {
 
     private final ProductRepository repository;
@@ -25,8 +27,10 @@ public class ProductService {
     public ProductResponse createProduct(ProductCreateRequest request){
         validateSku(request.sku());
         Product product = new Product(request);
+        Product saved = repository.save(product);
+        log.info("Produto criado: id={}, sku={}", saved.getId(), saved.getSku());
 
-        return new ProductResponse(repository.save(product));
+        return new ProductResponse(saved);
     }
 
     public Page<ProductResponse> listProducts(Pageable pageable){
@@ -49,6 +53,7 @@ public class ProductService {
         product.updateProduct(productUpdateRequest);
 
         var productSave = repository.save(product);
+        log.info("Produto atualizado: id={}, sku={}", productSave.getId(), productSave.getSku());
 
         return new ProductResponse(productSave);
     }

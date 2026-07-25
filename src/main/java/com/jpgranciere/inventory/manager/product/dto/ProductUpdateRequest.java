@@ -2,6 +2,8 @@ package com.jpgranciere.inventory.manager.product.dto;
 
 import com.jpgranciere.inventory.manager.product.enums.ProductCategory;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
+import org.hibernate.validator.constraints.EAN;
 
 import java.math.BigDecimal;
 
@@ -18,8 +20,10 @@ public record ProductUpdateRequest(
         @Min(10)
         Integer minStockQuantity,
 
+        @Positive(message = "Preço nao pode ser negativo")
         BigDecimal price,
 
+        @EAN
         String gtin
 
 

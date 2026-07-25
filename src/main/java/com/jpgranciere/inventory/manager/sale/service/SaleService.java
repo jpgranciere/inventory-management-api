@@ -6,7 +6,7 @@ import com.jpgranciere.inventory.manager.cashier.cashierOpen.repository.CashRegi
 import com.jpgranciere.inventory.manager.exception.CashRegisterNotOpenException;
 import com.jpgranciere.inventory.manager.exception.InsufficientStockException;
 import com.jpgranciere.inventory.manager.exception.ProductNotFoundException;
-import com.jpgranciere.inventory.manager.exception.SalesNotFound;
+import com.jpgranciere.inventory.manager.exception.SalesNotFoundException;
 import com.jpgranciere.inventory.manager.product.entity.Product;
 import com.jpgranciere.inventory.manager.product.repository.ProductRepository;
 import com.jpgranciere.inventory.manager.sale.dto.*;
@@ -15,6 +15,7 @@ import com.jpgranciere.inventory.manager.sale.entity.SaleItem;
 import com.jpgranciere.inventory.manager.sale.repository.SaleRepository;
 import com.jpgranciere.inventory.manager.stockmovement.service.StockMovementService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SaleService {
 
     private final SaleRepository saleRepository;
@@ -61,6 +63,8 @@ public class SaleService {
         }
 
        Sale savedSale = saleRepository.save(sale);
+       log.info("Venda concluída: id={}, cashRegisterId={}, total={}, itens={}",
+               savedSale.getId(), savedSale.getCashRegister().getId(), savedSale.getTotal(), savedSale.getSaleItemList().size());
 
         return new SaleResponse(savedSale);
     }
@@ -73,7 +77,7 @@ public class SaleService {
     public SaleResponse getSaleById(Long id){
         return saleRepository.findById(id)
                 .map(SaleResponse::new)
-                .orElseThrow(()-> new SalesNotFound());
+                .orElseThrow(()-> new SalesNotFoundException());
 
     }
 

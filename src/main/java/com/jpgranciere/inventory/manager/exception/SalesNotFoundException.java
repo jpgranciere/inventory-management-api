@@ -1,7 +1,7 @@
 package com.jpgranciere.inventory.manager.exception;
 
-public class SalesNotFound extends RuntimeException {
-    public SalesNotFound(){
+public class SalesNotFoundException extends RuntimeException {
+    public SalesNotFoundException(){
         super("Venda não encontrada");
     }
 }

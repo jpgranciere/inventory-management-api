@@ -12,7 +12,7 @@ public record SaleCreateRequest(
         @NotNull
         List<@Valid SaleItemRequest> items,
 
-        @NotNull
+        @NotNull(message = "Método de pagamento é obrigatorio")
         PaymentMethod paymentMethod,
 
         @NotNull

@@ -8,11 +8,13 @@ import com.jpgranciere.inventory.manager.cashier.cashierOpen.repository.CashRegi
 import com.jpgranciere.inventory.manager.exception.CashRegisterAlreadyClosedException;
 import com.jpgranciere.inventory.manager.exception.CashRegisterAlreadyOpenException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CashRegisterService {
     private final CashRegisterRepository cashRegisterRepository;
 
@@ -22,6 +24,7 @@ public class CashRegisterService {
 
         CashRegister cashRegister = new CashRegister(cashRegisterOpenRequest.openingBalance());
         CashRegister savedCashRegister = cashRegisterRepository.save(cashRegister);
+        log.info("Caixa aberto: id={}, saldoInicial={}", savedCashRegister.getId(), savedCashRegister.getOpeningBalance());
 
         return new CashRegisterResponse(savedCashRegister);
     }

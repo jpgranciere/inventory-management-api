@@ -11,6 +11,7 @@ import com.jpgranciere.inventory.manager.exception.*;
 import com.jpgranciere.inventory.manager.sale.entity.Sale;
 import com.jpgranciere.inventory.manager.sale.repository.SaleRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,20 +23,21 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CashRegisterClosingService {
     private final CashRegisterClosingRepository cashRegisterClosingRepository;
     private final SaleRepository saleRepository;
     private final CashRegisterRepository cashRegisterRepository;
 
     @Transactional
-    public CashRegisterClosingResponse registerCashClosing(Long id){
+    public CashRegisterClosingResponse registerCashClosing(){
         CashRegister cashRegister = cashRegisterRepository.findByCashRegisterStatus(CashRegisterStatus.OPEN)
                 .orElseThrow(CashRegisterNotOpenException::new);
 
         List<Sale> sales = saleRepository.findByCashRegisterId(cashRegister.getId());
 
         if(sales.isEmpty()){
-            throw new SalesNotFound();
+            throw new SalesNotFoundException();
         }
 
         TotalSummary totals = calculateClosingResponse(sales);
@@ -53,6 +55,8 @@ public class CashRegisterClosingService {
         cashRegister.close();
 
         CashRegisterClosing savedClosing = cashRegisterClosingRepository.save(cashRegisterClosing);
+        log.info("Caixa fechado: cashRegisterId={}, closingId={}, totalVendas={}",
+                cashRegister.getId(), savedClosing.getId(), totals.totalSales());
 
         return new CashRegisterClosingResponse(savedClosing);
     }
@@ -64,7 +68,7 @@ public class CashRegisterClosingService {
 
     public CashRegisterClosingResponse getClosingByDate(LocalDate date){
         CashRegisterClosing closing = cashRegisterClosingRepository.findByReferenceDate(date)
-                .orElseThrow(SalesNotFound::new);
+                .orElseThrow(SalesNotFoundException::new);
 
         return new CashRegisterClosingResponse(closing);
     }

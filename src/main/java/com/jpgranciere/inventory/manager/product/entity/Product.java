@@ -2,7 +2,7 @@ package com.jpgranciere.inventory.manager.product.entity;
 
 import com.jpgranciere.inventory.manager.exception.InsufficientQuantityException;
 import com.jpgranciere.inventory.manager.exception.InsufficientStockException;
-import com.jpgranciere.inventory.manager.exception.StatusNotExists;
+import com.jpgranciere.inventory.manager.exception.StatusNotExistsException;
 import com.jpgranciere.inventory.manager.product.dto.ProductCreateRequest;
 import com.jpgranciere.inventory.manager.product.dto.ProductStatusUpdateRequest;
 import com.jpgranciere.inventory.manager.product.dto.ProductUpdateRequest;
@@ -77,7 +77,7 @@ public class Product {
 
     public void updateStatus(ProductStatusUpdateRequest request){
         if(request.status() == null){
-            throw new StatusNotExists();
+            throw new StatusNotExistsException();
         }
         setStatus(request.status());
     }
