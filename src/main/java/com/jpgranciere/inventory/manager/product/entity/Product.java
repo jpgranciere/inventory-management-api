@@ -53,10 +53,10 @@ public class Product {
 
     public void updateProduct(ProductUpdateRequest request){
         if(request.name() != null){
-            setName(request.name().toUpperCase());
+            setName(request.name());
         }
         if(request.description() != null){
-            setDescription(request.description().toUpperCase());
+            setDescription(request.description());
         }
         if(request.sku() != null) {
             setSku(request.sku().toUpperCase());

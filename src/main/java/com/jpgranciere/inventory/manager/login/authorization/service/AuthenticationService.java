@@ -5,12 +5,12 @@ import com.jpgranciere.inventory.manager.login.dto.AuthenticationCreateRequest;
 import com.jpgranciere.inventory.manager.login.dto.AuthenticationRegisterCreate;
 import com.jpgranciere.inventory.manager.login.dto.LoginResponse;
 import com.jpgranciere.inventory.manager.login.dto.RegisterResponse;
+import com.jpgranciere.inventory.manager.login.security.SecurityConfiguration;
 import com.jpgranciere.inventory.manager.login.user.entity.User;
 import com.jpgranciere.inventory.manager.login.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +19,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final TokenService tokenService;
+    private final SecurityConfiguration securityConfiguration;
 
     public LoginResponse login(AuthenticationCreateRequest authentication){
         var usernamePassword = new UsernamePasswordAuthenticationToken(authentication.login(), authentication.password());
@@ -35,7 +36,7 @@ public class AuthenticationService {
             throw new UserAlreadyRegistrationException();
         }
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(authenticationRegister.password());
+        String encryptedPassword = securityConfiguration.passwordEncoder().encode(authenticationRegister.password());
         User user = new User(authenticationRegister.login(), encryptedPassword, authenticationRegister.userRole());
 
         userRepository.save(user);

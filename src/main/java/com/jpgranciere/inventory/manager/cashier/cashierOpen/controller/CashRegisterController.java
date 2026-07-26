@@ -38,7 +38,7 @@ public class CashRegisterController {
     public ResponseEntity<CashRegisterClosingResponse> close(UriComponentsBuilder uriBuilder){
         CashRegisterClosingResponse response = cashRegisterClosingService.registerCashClosing();
 
-        URI uri = uriBuilder.path("/cash/registers/closings").buildAndExpand(response.id()).toUri();
+        URI uri = uriBuilder.path("/cash/registers/closings/{id}").buildAndExpand(response.id()).toUri();
 
         return ResponseEntity.created(uri).body(response);
     }

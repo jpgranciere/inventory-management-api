@@ -23,7 +23,6 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    @Transactional
     public ResponseEntity createProduct(@Valid @RequestBody ProductCreateRequest request, UriComponentsBuilder uriBuilder){
         var product = productService.createProduct(request);
 
