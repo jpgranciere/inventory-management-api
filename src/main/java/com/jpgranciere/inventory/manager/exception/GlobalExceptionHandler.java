@@ -122,6 +122,10 @@ public class GlobalExceptionHandler {
         return handleBusinessException(ex, request, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(InsufficientCashBalanceException.class)
+    public ResponseEntity<ErrorResponse> handlerInsufficientCashBalanceException(InsufficientCashBalanceException ex, HttpServletRequest request){
+        return handleBusinessException(ex, request, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleUnexpectedException(Exception ex,HttpServletRequest request) {
