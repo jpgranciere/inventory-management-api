@@ -41,4 +41,5 @@ public class CashRegister {
         this.cashRegisterStatus = CashRegisterStatus.CLOSED;
         this.closedAt = LocalDateTime.now();
     }
+
 }

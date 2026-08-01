@@ -7,6 +7,9 @@ import com.jpgranciere.inventory.manager.cashier.cashierClose.repository.CashReg
 import com.jpgranciere.inventory.manager.cashier.cashierOpen.entity.CashRegister;
 import com.jpgranciere.inventory.manager.cashier.cashierOpen.enums.CashRegisterStatus;
 import com.jpgranciere.inventory.manager.cashier.cashierOpen.repository.CashRegisterRepository;
+import com.jpgranciere.inventory.manager.cashier.transaction.entity.CashTransaction;
+import com.jpgranciere.inventory.manager.cashier.transaction.enums.CashTransactionType;
+import com.jpgranciere.inventory.manager.cashier.transaction.repository.CashTransactionRepository;
 import com.jpgranciere.inventory.manager.exception.*;
 import com.jpgranciere.inventory.manager.sale.entity.Sale;
 import com.jpgranciere.inventory.manager.sale.repository.SaleRepository;
@@ -28,6 +31,7 @@ public class CashRegisterClosingService {
     private final CashRegisterClosingRepository cashRegisterClosingRepository;
     private final SaleRepository saleRepository;
     private final CashRegisterRepository cashRegisterRepository;
+    private final CashTransactionRepository cashTransactionRepository;
 
     @Transactional
     public CashRegisterClosingResponse registerCashClosing(){
@@ -36,11 +40,20 @@ public class CashRegisterClosingService {
 
         List<Sale> sales = saleRepository.findByCashRegisterId(cashRegister.getId());
 
-        if(sales.isEmpty()){
-            throw new SalesNotFoundException();
+        List<CashTransaction> transactions = cashTransactionRepository.findByCashRegisterIdOrderByCreatedAtAsc(cashRegister.getId());
+
+        BigDecimal supplies = BigDecimal.ZERO;
+        BigDecimal withdrawals = BigDecimal.ZERO;
+
+        for (CashTransaction cashTransaction : transactions){
+            switch (cashTransaction.getType()){
+                case SUPPLY -> supplies = supplies.add(cashTransaction.getAmount());
+                case WITHDRAWAL -> withdrawals = withdrawals.add(cashTransaction.getAmount());
+            }
         }
 
         TotalSummary totals = calculateClosingResponse(sales);
+        BigDecimal expectedCashBalance = cashRegister.getOpeningBalance().add(totals.totalCash()).add(supplies).subtract(withdrawals);
 
         CashRegisterClosing cashRegisterClosing = new CashRegisterClosing(
                 cashRegister.getOpenedAt().toLocalDate(),
@@ -49,6 +62,10 @@ public class CashRegisterClosingService {
                 totals.totalDebit(),
                 totals.totalCredit(),
                 totals.totalCash(),
+                cashRegister.getOpeningBalance(),
+                supplies,
+                withdrawals,
+                expectedCashBalance,
                 sales.size(),
                 cashRegister);
 

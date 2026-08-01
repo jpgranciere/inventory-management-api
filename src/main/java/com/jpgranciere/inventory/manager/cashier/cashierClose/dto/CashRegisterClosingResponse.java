@@ -8,10 +8,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record CashRegisterClosingResponse(Long id, LocalDate referenceDate, LocalDateTime closedAt, BigDecimal totalPix, BigDecimal totalCash, BigDecimal totalDebit,
-                                          BigDecimal totalCredit, BigDecimal totalAmount, int salesCount, CashRegisterStatus cashRegisterStatus) {
+                                          BigDecimal totalCredit, BigDecimal totalAmount, int salesCount, CashRegisterStatus cashRegisterStatus,
+                                          BigDecimal openingBalance, BigDecimal supplies, BigDecimal withdrawals, BigDecimal expectedCashBalance) {
     public CashRegisterClosingResponse(CashRegisterClosing registerClosing) {
         this(registerClosing.getId(), registerClosing.getReferenceDate(), registerClosing.getClosedAt(), registerClosing.getTotalPix(),
                 registerClosing.getTotalCash(), registerClosing.getTotalDebit(), registerClosing.getTotalCredit(), registerClosing.getTotalAmount(),
-                registerClosing.getSalesCount(), registerClosing.getCashRegister().getCashRegisterStatus());
+                registerClosing.getSalesCount(), registerClosing.getCashRegister().getCashRegisterStatus(), registerClosing.getOpeningBalance(), registerClosing.getSupplies(),
+                registerClosing.getWithdrawals(), registerClosing.getExpectedCashBalance());
     }
 }

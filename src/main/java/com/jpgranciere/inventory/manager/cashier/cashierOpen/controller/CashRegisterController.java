@@ -6,6 +6,8 @@ import com.jpgranciere.inventory.manager.cashier.cashierClose.service.CashRegist
 import com.jpgranciere.inventory.manager.cashier.cashierOpen.dto.CashRegisterOpenRequest;
 import com.jpgranciere.inventory.manager.cashier.cashierOpen.dto.CashRegisterResponse;
 import com.jpgranciere.inventory.manager.cashier.cashierOpen.service.CashRegisterService;
+import com.jpgranciere.inventory.manager.cashier.summary.dto.CashRegisterSummaryResponse;
+import com.jpgranciere.inventory.manager.cashier.summary.service.CashRegisterSummaryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,7 @@ import java.time.LocalDate;
 public class CashRegisterController {
     private final CashRegisterService cashRegisterService;
     private final CashRegisterClosingService cashRegisterClosingService;
+    private final CashRegisterSummaryService cashRegisterSummaryService;
 
     @PostMapping("/open")
     public ResponseEntity<CashRegisterResponse> open(@Valid @RequestBody CashRegisterOpenRequest request, UriComponentsBuilder uriComponentsBuilder){
@@ -51,5 +54,10 @@ public class CashRegisterController {
     @GetMapping("/closings/{date}")
     public ResponseEntity<CashRegisterClosingResponse> getClosingByDate (@PathVariable LocalDate date){
         return ResponseEntity.ok(cashRegisterClosingService.getClosingByDate(date));
+    }
+
+    @GetMapping("/current/summary")
+    public ResponseEntity<CashRegisterSummaryResponse> getSummaryResponse(){
+        return ResponseEntity.ok(cashRegisterSummaryService.getCurrentSummary());
     }
 }

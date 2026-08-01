@@ -29,6 +29,10 @@ public class CashRegisterClosing {
     private BigDecimal totalDebit = BigDecimal.ZERO;
     private BigDecimal totalCredit = BigDecimal.ZERO;
     private BigDecimal totalAmount = BigDecimal.ZERO;
+    private BigDecimal openingBalance = BigDecimal.ZERO;
+    private BigDecimal supplies = BigDecimal.ZERO;
+    private BigDecimal withdrawals = BigDecimal.ZERO;
+    private BigDecimal expectedCashBalance = BigDecimal.ZERO;
     private int salesCount = 0;
 
     @OneToOne
@@ -43,6 +47,10 @@ public class CashRegisterClosing {
             BigDecimal totalDebit,
             BigDecimal totalCredit,
             BigDecimal totalCash,
+            BigDecimal openingBalance,
+            BigDecimal supplies,
+            BigDecimal withdrawals,
+            BigDecimal expectedCashBalance,
             int salesCount,
             CashRegister cashRegister)
     {
@@ -54,6 +62,10 @@ public class CashRegisterClosing {
         this.totalDebit = totalDebit;
         this.totalCredit = totalCredit;
         this.totalAmount = totalSales;
+        this.openingBalance = openingBalance;
+        this.supplies = supplies;
+        this.withdrawals = withdrawals;
+        this.expectedCashBalance = expectedCashBalance;
         this.salesCount = salesCount;
     }
 }

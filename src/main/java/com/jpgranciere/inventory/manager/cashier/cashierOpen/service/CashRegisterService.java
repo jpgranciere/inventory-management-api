@@ -7,10 +7,13 @@ import com.jpgranciere.inventory.manager.cashier.cashierOpen.enums.CashRegisterS
 import com.jpgranciere.inventory.manager.cashier.cashierOpen.repository.CashRegisterRepository;
 import com.jpgranciere.inventory.manager.exception.CashRegisterAlreadyClosedException;
 import com.jpgranciere.inventory.manager.exception.CashRegisterAlreadyOpenException;
+import com.jpgranciere.inventory.manager.sale.entity.Sale;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
